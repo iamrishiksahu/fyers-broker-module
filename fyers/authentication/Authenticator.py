@@ -23,22 +23,21 @@ class Authenticator:
     APP_RESPONSE_CODE = Constants.APP_RESPONSE_CODE
     APP_GRANT_TYPE = Constants.APP_GRANT_TYPE
     
-    __INSTANCE = None
-    
     MAX_FETCH_APP_KEYS_RETRY_COUNT = 3
     MAX_MAIN_RETRY_COUNT = 3
     MAX_INITIALIZE_RETRY_COUNT = 3
     
+    def __init__(self):
+        self.__appInstance = None
+    
     @staticmethod
-    def getInstance():
-        if Authenticator.__INSTANCE is None:
-            broker = Authenticator()
-            broker.main()
-            return broker
-        return Authenticator.__INSTANCE
-
+    def getAuthenticatedFyersIntance():
+        auth = Authenticator()
+        auth.authenticate()
+        return auth.__appInstance
+    
     def instantiate(self):
-        return self.getInstance()
+        return self.getAuthenticatedFyersIntance()
 
     # Set headers
     headers = {
@@ -257,7 +256,7 @@ class Authenticator:
                 return
             else:
                 MainUtil.deleteFile(Constants.PATH_APP_AUTH_TOKENS)
-                self.main()
+                self.authenticate()
                 pass
         
     def fetchAppKeys(self, retryCount = 0):
@@ -334,19 +333,9 @@ class Authenticator:
         if app_access_token is not None:
             return app_access_token
         
-    def main(self):
-
+    def authenticate(self):
         app_access_token = self.getAppKeys()
         self.initializeFyersModule(app_access_token)
 
-            
-    def get_funds(self):
-        return self.__appInstance.funds()
-    
-    def get_holdings(self):
-        return self.__appInstance.holdings()
-    
-    def history(self,data):
-        return self.__appInstance.history(data=data)
-    
+ 
 
