@@ -84,9 +84,9 @@ This project is open to get contributions by individuals. You are welcoome to co
 
 # Disclaimer
 
-This project is solely meant for educational and tutorial purposes only. The owner, contributor(s) or maintainer(s) of the project do not advise scripts for trading and none of them holds any responisbility of any failures, unexpected execution or performance related issues that might be encounter during the use of this module. The entire project is open-source and hence it is advised to check the source code and modify upto your satisfaction before placing orders. 
+This project is solely meant for educational and tutorial purposes only. The owner, contributor(s) or maintainer(s) of the project do not advise scripts for trading and none of them holds any responisbility for any failures, unexpected execution or performance related issues that might encounter during the use of this module. The entire project is open-source and hence it is advised to check the source code and modify upto your satisfaction before placing orders. 
 
-Trading in capital markets is subjected to financial risks.
+Trading in capital markets is subjected to financial risks. It is advised to perform proper risk analysis before executing orders.
 
 # Contact
 [LinkedIn]("https://linkedin.com/in/rishiksahubit")
