@@ -12,7 +12,7 @@ from ..utils.Constants import Constants
 from ..utils.Logger import Logger
 from ..utils.ApiUtil import APIUtil
 
-class Broker:
+class Authenticator:
     TOTP_SECRET = Constants.TOTP_SECRET
     CLIENT_ID = Constants.CLIENT_ID
     PIN = Constants.PIN
@@ -31,11 +31,11 @@ class Broker:
     
     @staticmethod
     def getInstance():
-        if Broker.__INSTANCE is None:
-            broker = Broker()
+        if Authenticator.__INSTANCE is None:
+            broker = Authenticator()
             broker.main()
             return broker
-        return Broker.__INSTANCE
+        return Authenticator.__INSTANCE
 
     def instantiate(self):
         return self.getInstance()
@@ -113,11 +113,11 @@ class Broker:
     def getTokensByLogin(self):
         # Create a session
         current_network_session = requests.Session()
-        current_network_session.headers.update(Broker.headers)
+        current_network_session.headers.update(Authenticator.headers)
         
-        request_key_for_otp = self.send_login_otp(current_network_session, Broker.CLIENT_ID)
-        request_key_for_pin = self.verify_otp(current_network_session, request_key_for_otp, pyotp.TOTP(Broker.TOTP_SECRET).now())
-        final_response = self.verify_pin(current_network_session, request_key_for_pin, Broker.PIN)
+        request_key_for_otp = self.send_login_otp(current_network_session, Authenticator.CLIENT_ID)
+        request_key_for_pin = self.verify_otp(current_network_session, request_key_for_otp, pyotp.TOTP(Authenticator.TOTP_SECRET).now())
+        final_response = self.verify_pin(current_network_session, request_key_for_pin, Authenticator.PIN)
 
         if final_response is not None and "access_token" in final_response and "refresh_token" in final_response:
             json_res = {
@@ -176,10 +176,10 @@ class Broker:
         }
         
         payload = {
-            "fyers_id" : Broker.CLIENT_ID,
-            "app_id" : Broker.APP_CLIENT_ID.split("-")[0],
-            "redirect_uri": Broker.APP_REDIRECT_URI,
-            "appType" :Broker.APP_CLIENT_ID.split("-")[1],
+            "fyers_id" : Authenticator.CLIENT_ID,
+            "app_id" : Authenticator.APP_CLIENT_ID.split("-")[0],
+            "redirect_uri": Authenticator.APP_REDIRECT_URI,
+            "appType" :Authenticator.APP_CLIENT_ID.split("-")[1],
             "code_challenge": "",
             "state": "abcdefg",
             "scope": "",
@@ -218,9 +218,9 @@ class Broker:
             
             res = requests.post(Constants.URL_APP_REFRESH_TOKEN, json={
                 "grant_type": "refresh_token",
-                "appIdHash": MainUtil.getSHA256Hash(Broker.APP_CLIENT_ID + ":" + Broker.APP_SECRET_KEY),
+                "appIdHash": MainUtil.getSHA256Hash(Authenticator.APP_CLIENT_ID + ":" + Authenticator.APP_SECRET_KEY),
                 "refresh_token": app_refresh_token,
-                "pin": Broker.PIN            
+                "pin": Authenticator.PIN            
             })
 
             if res.status_code == 200:
@@ -239,11 +239,11 @@ class Broker:
        
     def initializeFyersModule(self, access_token, retryCount = 0):
         
-        if retryCount > Broker.MAX_INITIALIZE_RETRY_COUNT:
+        if retryCount > Authenticator.MAX_INITIALIZE_RETRY_COUNT:
             Logger.log("Retry count exceeded for initializeFyersModule")
             return
         
-        self.__appInstance = fyersModel.FyersModel(client_id=Broker.CLIENT_ID, token=access_token,is_async=False, log_path="")
+        self.__appInstance = fyersModel.FyersModel(client_id=Authenticator.CLIENT_ID, token=access_token,is_async=False, log_path="")
         funds_res = self.__appInstance.funds()
         
         if funds_res['code'] == 200:
@@ -262,7 +262,7 @@ class Broker:
         
     def fetchAppKeys(self, retryCount = 0):
         
-        if retryCount > Broker.MAX_FETCH_APP_KEYS_RETRY_COUNT:
+        if retryCount > Authenticator.MAX_FETCH_APP_KEYS_RETRY_COUNT:
             Logger.log("Max retry limit reached for fetchAppKeys Method. ")
             return
         
@@ -274,11 +274,11 @@ class Broker:
         if tokenValidityStatus == 1 :        
             auth_code = self.getAuthCode(access_token)                   
             app_session = fyersModel.SessionModel(
-                client_id=Broker.APP_CLIENT_ID,
-                secret_key=Broker.APP_SECRET_KEY, 
-                redirect_uri=Broker.APP_REDIRECT_URI, 
-                response_type=Broker.APP_RESPONSE_CODE, 
-                grant_type=Broker.APP_GRANT_TYPE
+                client_id=Authenticator.APP_CLIENT_ID,
+                secret_key=Authenticator.APP_SECRET_KEY, 
+                redirect_uri=Authenticator.APP_REDIRECT_URI, 
+                response_type=Authenticator.APP_RESPONSE_CODE, 
+                grant_type=Authenticator.APP_GRANT_TYPE
             )
             app_session.set_token(auth_code)
             app_auth_response = app_session.generate_token()
