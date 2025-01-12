@@ -75,5 +75,3 @@ def myImplementation():
 **Limits**
 There is not limit of the data duration for the supported timeframes. Limits by Fyers API has been handled gracefully.
 [Visit here for more details]("https://myapi.fyers.in/docsv3#tag/Data-Api/paths/~1DataApi/post")
-
-## 

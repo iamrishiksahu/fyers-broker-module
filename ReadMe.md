@@ -82,5 +82,11 @@ Here's a detailed documentation on how you can use the application for specific 
 
 This project is open to get contributions by individuals. You are welcoome to contribute and help this project grow.
 
+# Disclaimer
+
+This project is solely meant for educational and tutorial purposes only. The owner, contributor(s) or maintainer(s) of the project do not advise scripts for trading and none of them holds any responisbility of any failures, unexpected execution or performance related issues that might be encounter during the use of this module. The entire project is open-source and hence it is advised to check the source code and modify upto your satisfaction before placing orders. 
+
+Trading in capital markets is subjected to financial risks.
+
 # Contact
-[![LinkedIn]("https://in.linkedin.com/?trk=guest_homepage-basic_nav-header-logo")]("https://linkedin.com/in/rishiksahubit")
+[LinkedIn]("https://linkedin.com/in/rishiksahubit")
