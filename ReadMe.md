@@ -17,8 +17,8 @@ Before setting up the project, make sure the following are installed in your mac
 
 - **Python (>= 3.x)**
 - **pip** (Python package manager)
-- **Enabled 2FA using TOTP in Fyers Account** ([Tutorial]("https://support.fyers.in/portal/en/kb/articles/how-to-set-up-time-based-one-time-password-totp-in-fyers))
-- **Created and Activated Fyers API APP**([Tutorial]("https://myapi.fyers.in))
+- **Enabled 2FA using TOTP in Fyers Account** ([Tutorial](https://support.fyers.in/portal/en/kb/articles/how-to-set-up-time-based-one-time-password-totp-in-fyers))
+- **Created and Activated Fyers API APP**([Tutorial](https://myapi.fyers.in))
 
 # Setup Instructions (Windows Machine)
 
@@ -89,4 +89,4 @@ This project is solely meant for educational and tutorial purposes only. The own
 Trading in capital markets is subjected to financial risks. It is advised to perform proper risk analysis before executing orders.
 
 # Contact
-[LinkedIn]("https://linkedin.com/in/rishiksahubit")
+[LinkedIn](https://linkedin.com/in/rishiksahubit)
