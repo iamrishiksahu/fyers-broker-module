@@ -2,7 +2,6 @@ logs
 logs
 __pycache__
 outputs
-resources
 Lib
 Include
 share
@@ -11,3 +10,4 @@ Scripts
 pyvenv.cfg
 .env
 installed_requirements.txt
+tokens

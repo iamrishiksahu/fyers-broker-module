@@ -73,7 +73,7 @@ class HistoricalDataDownloader:
                 if toDt > endDate : toDt = endDate                      
 
             
-            MainUtil.writeFile(Constants.DIR_ROOT.joinpath("resources/historical_data").joinpath(filename), data)
+            MainUtil.writeFile(Constants.DIR_HISTORICAL_DATA.joinpath(filename), data)
         
     def get_date_after_n_days(self, date_str, n):
 

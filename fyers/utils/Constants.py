@@ -17,13 +17,15 @@ class Constants():
     
     DIR_ROOT = Path(__file__).resolve().parent.parent
     
-    DIR_FYERS_AUTH_TOKENS = DIR_ROOT.joinpath("outputs/fyers_auth_token")
+    DIR_FYERS_AUTH_TOKENS = DIR_ROOT.joinpath("tokens/fyers_auth_token")
     FILENAME_FYERS_AUTH_TOKENS = "fyers_auth_config.json"
     PATH_FYERS_AUTH_TOKENS = DIR_FYERS_AUTH_TOKENS.joinpath(FILENAME_FYERS_AUTH_TOKENS)
     
-    DIR_APP_AUTH_TOKENS = DIR_ROOT.joinpath("outputs/app_auth_token")
+    DIR_APP_AUTH_TOKENS = DIR_ROOT.joinpath("tokens/app_auth_token")
     FILENAME_APP_AUTH_TOKENS = "app_auth_config.json"
     PATH_APP_AUTH_TOKENS = DIR_APP_AUTH_TOKENS.joinpath(FILENAME_APP_AUTH_TOKENS)
+    
+    DIR_HISTORICAL_DATA = DIR_ROOT.joinpath("outputs/historical_data")
     
        
     URL_APP_REFRESH_TOKEN = "https://api-t1.fyers.in/api/v3/validate-refresh-token"
