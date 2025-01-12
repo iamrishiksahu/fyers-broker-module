@@ -1,8 +1,9 @@
+from enum import Enum
 from pathlib import Path
 from dotenv import load_dotenv
 import os
 
-class Constants:
+class Constants(Enum):
 
     load_dotenv()
     TOTP_SECRET = os.getenv("TOTP_SECRET")
@@ -32,8 +33,7 @@ class Constants:
     URL_VERIFY_PIN = "https://api-t2.fyers.in/vagator/v2/verify_pin_v2"
     URL_VALIDATE_TOKENS = "https://api-t1.fyers.in/gk/validate_tokens"
     URL_GET_AUTH_CODE = "https://api.fyers.in/api/v2/token"
-    
-    
+       
     
     DIR_LOGS = DIR_ROOT.joinpath("logs")
     
