@@ -1,4 +1,3 @@
-# Import the required module from the fyers_apiv3 package
 from fyers_apiv3 import fyersModel
 from datetime import datetime
 import json
@@ -8,18 +7,13 @@ from .utils.MainUtil import MainUtil
 from .utils.Constants import Constants
 
 
-# Create a datetime object
-
 class HistoricalDataDownloader:
     
     def __init__(self, broker):
         self.broker = broker
         self.scripts = []
 
-
     def perform(self,frmdt, todt, scrpt, timeframe="1D"):
-        
-        
         fromDatestr = frmdt
         toDatestr = todt
         fromDateObj = datetime.strptime(fromDatestr, "%Y-%m-%d")
@@ -58,12 +52,9 @@ class HistoricalDataDownloader:
         return newHistData
 
     def setScripts(self, scripts):
-        
         self.scripts = scripts
 
     def downloadData(self, startDate, endDate, timeframe = "1D"):
-        
-
         for script in self.scripts:
             fromDt = startDate
             toDt = self.get_date_after_n_days(fromDt, 99)
@@ -85,7 +76,6 @@ class HistoricalDataDownloader:
             
             MainUtil.writeFile(Constants.DIR_ROOT.joinpath("resources/historical_data").joinpath(filename), data)
         
-            
     def get_date_after_n_days(self, date_str, n):
 
         # Convert the input string to a datetime object
