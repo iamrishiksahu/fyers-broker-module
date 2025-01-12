@@ -10,3 +10,4 @@ Scripts
 *.log
 pyvenv.cfg
 .env
+installed_requirements.txt

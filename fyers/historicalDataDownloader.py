@@ -70,8 +70,7 @@ class HistoricalDataDownloader:
                     
                 fromDt = self.get_date_after_n_days(toDt, 1)
                 toDt = self.get_date_after_n_days(fromDt,99) 
-                if toDt > endDate : toDt = endDate
-                        
+                if toDt > endDate : toDt = endDate                      
 
             
             MainUtil.writeFile(Constants.DIR_ROOT.joinpath("resources/historical_data").joinpath(filename), data)
