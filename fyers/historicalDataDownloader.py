@@ -39,7 +39,7 @@ class HistoricalDataDownloader:
             "cont_flag":"1"
         }
 
-        response = self.broker.history(data=data)
+        response = self.broker.get_historical_data(data=data)
 
         if response['code'] != 200:
             # Some error occurred

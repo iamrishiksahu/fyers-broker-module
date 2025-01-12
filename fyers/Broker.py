@@ -18,12 +18,11 @@ class Broker:
     def authenticate(self):
         self.__fyers_instance = Authenticator.getAuthenticatedFyersIntance()
         
-        
     def get_funds(self):
         return self.__fyers_instance.funds()
     
     def get_holdings(self):
         return self.__fyers_instance.holdings()
     
-    def history(self,data):
+    def get_historical_data(self,data):
         return self.__fyers_instance.history(data=data)
