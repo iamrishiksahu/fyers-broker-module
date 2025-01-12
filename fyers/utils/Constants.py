@@ -1,9 +1,8 @@
-from enum import Enum
 from pathlib import Path
 from dotenv import load_dotenv
 import os
 
-class Constants(Enum):
+class Constants():
 
     load_dotenv()
     TOTP_SECRET = os.getenv("TOTP_SECRET")
