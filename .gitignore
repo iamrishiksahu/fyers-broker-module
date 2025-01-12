@@ -1,0 +1,12 @@
+logs
+logs
+__pycache__
+outputs
+resources
+Lib
+Include
+share
+Scripts
+*.log
+pyvenv.cfg
+.env
