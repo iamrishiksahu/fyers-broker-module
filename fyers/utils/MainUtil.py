@@ -3,6 +3,9 @@ import hashlib
 from pathlib import Path
 from .FileUtility import FileUtility
 from .Logger import Logger
+from .Constants import Constants
+from datetime import datetime
+import json
 
 class MainUtil:
     
@@ -17,7 +20,19 @@ class MainUtil:
         # Get the hexadecimal representation of the hash
         hex_digest = sha256_hash.hexdigest()
         return hex_digest
-
+    
+    @staticmethod
+    def getAppAccessToken():
+        file_contents = MainUtil.readFile(Constants.PATH_APP_AUTH_TOKENS)
+        config_data = json.loads(file_contents)
+        # If the date is same date, we can use the token, else generate new
+        if config_data['created_date'] == str(datetime.today().date()):
+            Logger.log("App Access Token Available! Using the same.")
+            return config_data["access_token"]
+        else:
+            # This case is handled automatically in the implementation
+            return ""
+        
     
     @staticmethod
     def readFile(file_path):

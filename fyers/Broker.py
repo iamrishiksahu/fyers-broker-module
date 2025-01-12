@@ -17,6 +17,7 @@ class Broker:
         
     def authenticate(self):
         self.__fyers_instance = Authenticator.getAuthenticatedFyersIntance()
+        return
         
     def get_funds(self):
         return self.__fyers_instance.funds()

@@ -314,17 +314,9 @@ class Authenticator:
             self.fetchAppKeys(retryCount=retryCount+1)  
             
     def getAppKeys(self):
-        try:                
-            file_contents = MainUtil.readFile(Constants.PATH_APP_AUTH_TOKENS)
-            config_data = json.loads(file_contents)
-            # If the date is same date, we can use the token, else generate new
-            if config_data['created_date'] == str(datetime.today().date()):
-                Logger.log("App Access Token Available! Using the same.")
-                return config_data["access_token"]
-            else:
-                # This case is handled automatically in the initializeFyersModule function
-                return ""
-
+        try:         
+            # Its important for this statement to be inside try-catch wrapper       
+            return MainUtil.getAppAccessToken()        
         except Exception as e:
             Logger.log(e)   
         

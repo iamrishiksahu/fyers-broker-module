@@ -1,5 +1,6 @@
 from .HistoricalDataDownloader import HistoricalDataDownloader
 from .Broker import Broker 
+from .LiveMarketFeed import LiveMarketFeed
 
 class Main:
     
@@ -14,15 +15,21 @@ class Main:
             return
     
         # Sample implementation of downloading historical data for NIFTY 50
-        hdl = HistoricalDataDownloader(broker)
-        hdl.setScripts([
-            "NSE:NIFTY50-INDEX",
-        ])
+        # hdl = HistoricalDataDownloader(broker)
+        # hdl.setScripts([
+        #     "NSE:NIFTY50-INDEX",
+        # ])
         
-        startDate = "2025-01-01"
-        endDate = "2025-01-04"
-        timeframe = "1D"
-        hdl.downloadData(startDate, endDate, timeframe)
+        # startDate = "2025-01-01"
+        # endDate = "2025-01-04"
+        # timeframe = "1D"
+        # hdl.downloadData(startDate, endDate, timeframe)
         
         # You can write your own implementation here
+        
+        
+        lmf = LiveMarketFeed()
+        lmf.setSubscriptionScripts(["NSE:NIFTY50-INDEX" , "NSE:NIFTYBANK-INDEX"])
+        lmf.start()
+        
             
