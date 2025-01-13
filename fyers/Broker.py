@@ -4,16 +4,15 @@ class Broker:
     
     __INSTANCE = None
     
+    def __new__(cls):
+        if cls.__INSTANCE is None:
+            cls.__INSTANCE = super().__new__(cls)
+            
+        return cls.__INSTANCE
+    
     def __init__(self):
         self.__fyers_instance = None
-               
-    @staticmethod
-    def getInstance():        
-        if Broker.__INSTANCE is None:
-            broker = Broker()
-            broker.authenticate()
-            Broker.__INSTANCE = broker
-        return Broker.__INSTANCE
+        self.authenticate()
         
     def authenticate(self):
         self.__fyers_instance = Authenticator.getAuthenticatedFyersIntance()

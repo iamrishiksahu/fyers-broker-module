@@ -4,6 +4,8 @@ from utils.Constants import Constants
 from fyers_apiv3.FyersWebsocket import data_ws
 from datetime import datetime
 
+sio = None
+
 class LiveMarketFeed:
     
     _INSTANCE = None
@@ -25,6 +27,10 @@ class LiveMarketFeed:
         self.fyersWS = None
         self.subscription_scripts = []
         self.last_update_recieved_time = None
+        self.__forward_socket_url = None
+        self.__forward_socket_event = "LiveMarketFeed"
+        self.__sio = None
+        self.feed_handler_func = None
         
         try:
             app_access_token = MainUtil.getAppAccessToken()
@@ -39,6 +45,19 @@ class LiveMarketFeed:
     def setSubscriptionScripts(self, script_list):
         self.subscription_scripts = script_list
     
+    def addSubscriptionScripts(self, script_list):
+        self.fyersWS.subscribe(script_list)
+
+    def setForwardSocketUrl(self, url):
+        self.__forward_socket_url = url
+        
+    def setForwardSocketEvent(self, event_name):
+        self.__forward_socket_event = event_name  
+        
+    def setFeedHandler(self, handlerFunc):
+        self.feed_handler_func = handlerFunc
+
+    
     def start(self):
         if self.fyersWS is not None:
             print("LiveMarketFeed Already Started!")
@@ -47,7 +66,7 @@ class LiveMarketFeed:
         try:       
             self.fyersWS = data_ws.FyersDataSocket(
                 access_token=self.app_access_token,         # Access token in the format "appid:accesstoken"
-                log_path=Constants.DIR_LOGS,                # Path to save logs. Leave empty to auto-create logs in the current directory.
+                log_path=str(Constants.DIR_LOGS),                # Path to save logs. Leave empty to auto-create logs in the current directory.
                 litemode=False,                             # Lite mode disabled. Set to True if you want a lite response.
                 # write_to_file=True,                       # Save response in a log file instead of printing it.
                 reconnect=True,                             # Enable auto-reconnection to WebSocket on disconnection.
@@ -62,6 +81,33 @@ class LiveMarketFeed:
         except Exception as e:
             Logger.log("Error starting the LiveMarketFeed!", e, type=LogType.ERROR)
             
+
+    # Create a Socket.IO client
+
+    #Define event handlers
+    # @sio.event
+    # def connect():
+    #     print("Connected to server.")
+
+    #     # Emit data to a specific event
+    #     sio.emit('custom_event', {'message': 'Hello, Server!', 'user': 'Alice'})
+
+    # @sio.on('custom_response')
+    # def on_custom_response(data):
+    #     print("Received response:", data)
+
+    # @sio.event
+    # def disconnect():
+    #     print("Disconnected from server.")
+
+    # # Connect to the server
+    # sio.connect('http://localhost:5000')
+
+    # # Keep the connection alive
+    # sio.wait()
+
+    
+    
     def onopen(self):
         """
         Callback function to subscribe to data type and symbols upon WebSocket connection.
@@ -69,7 +115,16 @@ class LiveMarketFeed:
         """
         # Specify the data type and symbols you want to subscribe to
         data_type = "SymbolUpdate"
-        print("LiveMarketFeed connection opened successfully")
+        
+        Logger.log("LiveMarketFeed connection opened successfully")
+        
+        if self.__forward_socket_url is not None:
+            Logger.log("Connecting to forward socket!")
+            # TODO: Connect to the socket
+            # sio = socketio.Client()
+            # self.sio = sio
+            
+            
 
         # Subscribe to the specified symbols and data type
         self.fyersWS.subscribe(symbols=self.subscription_scripts, data_type=data_type)
@@ -77,7 +132,7 @@ class LiveMarketFeed:
         # Keep the socket running to receive real-time data
         self.fyersWS.keep_running()
 
-    def handle_feed(self):
+    def handle_feed(self, message):
         """
         Handles market feed.
         """
@@ -98,6 +153,10 @@ class LiveMarketFeed:
         'symbol': 'NSE:NIFTYBANK-INDEX'}
         """
         
+
+        """ 'if' means Index Feed & 'sf' means Symbol Feed"""
+        if message['type'] == 'if' or message['type'] == 'sf':
+            self.feed_handler_func(message)
     
 
     def onmessage(self, message):
@@ -109,7 +168,6 @@ class LiveMarketFeed:
 
         """
         self.last_update_recieved_time = datetime.now()
-        print(message)
         self.handle_feed(message)
 
     def onerror(self, message):

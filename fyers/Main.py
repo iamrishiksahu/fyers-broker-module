@@ -1,15 +1,18 @@
 from .HistoricalDataDownloader import HistoricalDataDownloader
 from .Broker import Broker 
 from .LiveMarketFeed import LiveMarketFeed
+import time
 
 class Main:
     
     def __init__(self):
         pass
+            
+        
     
     def run(self):
         
-        broker = Broker.getInstance()
+        broker = Broker()
         if broker is None:
             print("Oops, broker could not be initialized")
             return
@@ -29,7 +32,15 @@ class Main:
         
         
         lmf = LiveMarketFeed()
-        lmf.setSubscriptionScripts(["NSE:NIFTY50-INDEX" , "NSE:NIFTYBANK-INDEX"])
+        lmf.setFeedHandler(self.feedHandler)
+        lmf.setSubscriptionScripts(["NSE:ADANIPORTS-EQ"])
         lmf.start()
         
-            
+        time.sleep(10)        
+        
+        lmf.addSubscriptionScripts(["NSE:RELIANCE-EQ"])
+        
+        
+    def feedHandler(self, feed):
+        print("FEED",feed)
+        
