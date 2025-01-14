@@ -89,6 +89,7 @@ def myImplementation():
     lmf.setFeedHandler(self.feedHandler)
     lmf.setSubscriptionScripts(["NSE:ADANIPORTS-EQ"]) # Send a list of instruments
     lmf.setForwardSocketUrl("http://socket-url") # Optional
+    lmf.setForwardSocketEvent("custom_event_name") # Optional
     lmf.start()
 
     # To subscribe when the subscription is already runnng.
