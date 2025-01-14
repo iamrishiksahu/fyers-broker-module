@@ -1,7 +1,7 @@
 import socketio
 import threading
 
-class SocketManager:
+class SocketUtility:
     def __init__(self, server_url):
         """Initialize the SocketManager with the server URL."""
         self.server_url = server_url
@@ -19,9 +19,9 @@ class SocketManager:
         def disconnect():
             print("Disconnected from the server")
 
-        @self.sio.on('welcome')
+        @self.sio.on('ping')
         def on_welcome(data):
-            print(f"Server says: {data}")
+            print("Server ping recieved")
 
     def connect(self):
         """Connect to the Socket.IO server."""
@@ -45,8 +45,3 @@ class SocketManager:
         """Register a custom event handler."""
         self.sio.on(event_name, handler)
 
-
-if __name__ == "__main__":
-    s = SocketManager("http://localhost:8088")
-    while True:
-        pass  # Keep the program running

@@ -3,12 +3,16 @@ from utils.Logger import Logger, LogType
 from utils.Constants import Constants
 from fyers_apiv3.FyersWebsocket import data_ws
 from datetime import datetime
+import socketio
+import json
+from utils.SocketUtility import SocketUtility
 
 sio = None
 
 class LiveMarketFeed:
     
     _INSTANCE = None
+    
     
     def __new__(cls):
         if cls._INSTANCE is None:
@@ -28,8 +32,9 @@ class LiveMarketFeed:
         self.subscription_scripts = []
         self.last_update_recieved_time = None
         self.__forward_socket_url = None
+        self.__forward_socket = None
         self.__forward_socket_event = "LiveMarketFeed"
-        self.__sio = None
+        self.__forward_socket_connected = False
         self.feed_handler_func = None
         
         try:
@@ -82,32 +87,6 @@ class LiveMarketFeed:
             Logger.log("Error starting the LiveMarketFeed!", e, type=LogType.ERROR)
             
 
-    # Create a Socket.IO client
-
-    #Define event handlers
-    # @sio.event
-    # def connect():
-    #     print("Connected to server.")
-
-    #     # Emit data to a specific event
-    #     sio.emit('custom_event', {'message': 'Hello, Server!', 'user': 'Alice'})
-
-    # @sio.on('custom_response')
-    # def on_custom_response(data):
-    #     print("Received response:", data)
-
-    # @sio.event
-    # def disconnect():
-    #     print("Disconnected from server.")
-
-    # # Connect to the server
-    # sio.connect('http://localhost:5000')
-
-    # # Keep the connection alive
-    # sio.wait()
-
-    
-    
     def onopen(self):
         """
         Callback function to subscribe to data type and symbols upon WebSocket connection.
@@ -117,13 +96,7 @@ class LiveMarketFeed:
         data_type = "SymbolUpdate"
         
         Logger.log("LiveMarketFeed connection opened successfully")
-        
-        if self.__forward_socket_url is not None:
-            Logger.log("Connecting to forward socket!")
-            # TODO: Connect to the socket
-            # sio = socketio.Client()
-            # self.sio = sio
-            
+    
             
 
         # Subscribe to the specified symbols and data type
@@ -131,6 +104,14 @@ class LiveMarketFeed:
 
         # Keep the socket running to receive real-time data
         self.fyersWS.keep_running()
+        
+            
+        if self.__forward_socket_url is not None:
+            Logger.log("Connecting to forward socket!")
+            # TODO: Connect to the socket
+            self.__forward_socket = SocketUtility(self.__forward_socket_url)
+            
+
 
     def handle_feed(self, message):
         """
@@ -153,11 +134,9 @@ class LiveMarketFeed:
         'symbol': 'NSE:NIFTYBANK-INDEX'}
         """
         
+        if self.__forward_socket_url is not None:
+            self.send_message_to_forward_socket(message)
 
-        """ 'if' means Index Feed & 'sf' means Symbol Feed"""
-        if message['type'] == 'if' or message['type'] == 'sf':
-            self.feed_handler_func(message)
-    
 
     def onmessage(self, message):
         """
@@ -188,5 +167,15 @@ class LiveMarketFeed:
         """
         print("Connection closed:", message)
 
-
-   
+    def is_forward_socket_connected(self):
+        return self.__forward_socket.connected
+    
+    def send_message_to_forward_socket(self, message):
+        """Send a message to the the forward socket server."""       
+        try:
+            self.__forward_socket.emit(self.__forward_socket_event, {'message': message})
+            print(f"Message sent: {message}")
+            pass
+        except Exception as e:
+            print(f"Error sending message: {e}")
+     

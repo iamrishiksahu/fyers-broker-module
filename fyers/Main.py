@@ -34,11 +34,12 @@ class Main:
         lmf = LiveMarketFeed()
         lmf.setFeedHandler(self.feedHandler)
         lmf.setSubscriptionScripts(["NSE:ADANIPORTS-EQ"])
+        lmf.setForwardSocketUrl("http://localhost:8088")
         lmf.start()
         
         time.sleep(10)        
         
-        lmf.addSubscriptionScripts(["NSE:RELIANCE-EQ"])
+        lmf.addSubscriptionScripts(["NSE:GRASIM-EQ"])
         
         
     def feedHandler(self, feed):
