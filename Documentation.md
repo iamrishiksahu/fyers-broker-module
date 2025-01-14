@@ -72,6 +72,34 @@ def myImplementation():
 
 ```
 
+
+## Accessing Live Market Feed
+You can
+
+Sample code:
+```bash
+def myImplementation():
+
+
+    # create a feed handler
+    def feedHandler(self, feed):
+        print("FEED",feed)
+
+    lmf = LiveMarketFeed()
+    lmf.setFeedHandler(self.feedHandler)
+    lmf.setSubscriptionScripts(["NSE:ADANIPORTS-EQ"]) # Send a list of instruments
+    lmf.setForwardSocketUrl("http://socket-url") # Optional
+    lmf.start()
+
+    # To subscribe when the subscription is already runnng.
+    # This simply adds the list to the existing subscription and it continues to recieve feed for the existing ones and the new ones.
+    lmf.addSubscriptionScripts(["NSE:GRASIM-EQ"]) 
+
+         
+    
+
+```
+
 **Limits**
 There is not limit of the data duration for the supported timeframes. Limits by Fyers API has been handled gracefully.
 [Visit here for more details]("https://myapi.fyers.in/docsv3#tag/Data-Api/paths/~1DataApi/post")
