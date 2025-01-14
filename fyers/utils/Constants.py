@@ -38,4 +38,6 @@ class Constants():
     
     DIR_LOGS = DIR_ROOT.joinpath("logs")
     
+    LIVE_MARKET_FEED_FORWARD_EVENT_NAME = "LiveMarketFeed"
+    
     

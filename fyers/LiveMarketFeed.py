@@ -33,8 +33,7 @@ class LiveMarketFeed:
         self.last_update_recieved_time = None
         self.__forward_socket_url = None
         self.__forward_socket = None
-        self.__forward_socket_event = "LiveMarketFeed"
-        self.__forward_socket_connected = False
+        self.__forward_socket_event = Constants.LIVE_MARKET_FEED_FORWARD_EVENT_NAME
         self.feed_handler_func = None
         
         try:
