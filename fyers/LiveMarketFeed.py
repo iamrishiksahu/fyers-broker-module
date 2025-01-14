@@ -7,12 +7,9 @@ import socketio
 import json
 from utils.SocketUtility import SocketUtility
 
-sio = None
-
 class LiveMarketFeed:
     
-    _INSTANCE = None
-    
+    _INSTANCE = None    
     
     def __new__(cls):
         if cls._INSTANCE is None:
@@ -92,11 +89,11 @@ class LiveMarketFeed:
 
         """
         # Specify the data type and symbols you want to subscribe to
-        data_type = "SymbolUpdate"
         
         Logger.log("LiveMarketFeed connection opened successfully")
     
             
+        data_type = "SymbolUpdate"
 
         # Subscribe to the specified symbols and data type
         self.fyersWS.subscribe(symbols=self.subscription_scripts, data_type=data_type)
@@ -107,7 +104,6 @@ class LiveMarketFeed:
             
         if self.__forward_socket_url is not None:
             Logger.log("Connecting to forward socket!")
-            # TODO: Connect to the socket
             self.__forward_socket = SocketUtility(self.__forward_socket_url)
             
 
@@ -132,6 +128,8 @@ class LiveMarketFeed:
         'type': 'if',
         'symbol': 'NSE:NIFTYBANK-INDEX'}
         """
+        
+        self.feed_handler_func(message)
         
         if self.__forward_socket_url is not None:
             self.send_message_to_forward_socket(message)
