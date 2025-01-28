@@ -34,10 +34,13 @@ class HistoricalDataDownloader:
         }
 
         response = self.broker.get_historical_data(data=data)
+        
+        # return print(response)
 
-        if response['code'] != 200:
+        if 'code' in response and response['code'] != 200:
             # Some error occurred
             print(response)
+
             
 
         histData = response['candles']
